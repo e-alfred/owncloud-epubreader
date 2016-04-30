@@ -1,0 +1,7 @@
+img,svg {
+	max-width: 99%;
+}
+
+body#comicBody {
+	text-align: center;
+}

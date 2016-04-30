@@ -1,0 +1,983 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-color: #404040;
+  background-image: url(../../img/epub/texture.png);
+}
+
+body,
+input,
+button,
+select {
+  font: message-box;
+}
+
+.hidden {
+  display: none;
+}
+
+#viewerContainer:-webkit-full-screen {
+  top: 0px;
+  border-top: 5px solid transparent;
+  background-color: #404040;
+  background-image: url(../../img/epub/texture.png);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#viewerContainer:-moz-full-screen {
+  top: 0px;
+  border-top: 5px solid transparent;
+  background-color: #404040;
+  background-image: url(../../img/epub/texture.png);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+:-webkit-full-screen .page:last-child {
+  margin-bottom: 40px;
+}
+
+:-moz-full-screen .page:last-child {
+  margin-bottom: 40px;
+}
+
+#viewerContainer:full-screen {
+  top: 0px;
+  background-color: #404040;
+  background-image: url(../../img/epub/texture.png);
+  width: 100%;
+  height: 100%;
+}
+
+/* outer/inner center provides horizontal center */
+html .outerCenter {
+  float: right;
+  position: relative;
+  right: 50%;
+  z-index: 0;
+}
+html .innerCenter {
+  float: right;
+  position: relative;
+  right: -50%;
+}
+
+#outerContainer {
+  width: 100%;
+  height: 100%;
+}
+
+#sidebarContainer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 200px;
+  visibility: hidden;
+  -webkit-transition-duration: 500ms;
+  -webkit-transition-timing-function: ease;
+  -moz-transition-duration: 500ms;
+  -moz-transition-timing-function: ease;
+  -ms-transition-duration: 500ms;
+  -ms-transition-timing-function: ease;
+  -o-transition-duration: 500ms;
+  -o-transition-timing-function: ease;
+  transition-duration: 500ms;
+  transition-timing-function: ease;
+  z-index: 999;
+  -webkit-transition-property: left;
+  -moz-transition-property: left;
+  -ms-transition-property: left;
+  -o-transition-property: left;
+  transition-property: left;
+  left: -200px;
+  background-color: #404040;
+  background-image: url(../../img/epub/texture.png);
+}
+
+#outerContainer.sidebarMoving > #sidebarContainer,
+#outerContainer.sidebarOpen > #sidebarContainer {
+  visibility: visible;
+}
+html #outerContainer.sidebarOpen > #sidebarContainer {
+  left: 0px;
+}
+
+#mainContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-transition-duration: 200ms;
+  -webkit-transition-timing-function: ease;
+  -moz-transition-duration: 200ms;
+  -moz-transition-timing-function: ease;
+  -ms-transition-duration: 200ms;
+  -ms-transition-timing-function: ease;
+  -o-transition-duration: 200ms;
+  -o-transition-timing-function: ease;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+html #outerContainer.sidebarOpen > #mainContainer {
+  -webkit-transition-property: left;
+  -moz-transition-property: left;
+  -ms-transition-property: left;
+  -o-transition-property: left;
+  transition-property: left;
+  left: 200px;
+}
+
+#sidebarContent {
+  top: 37px;
+  bottom: 0;
+  overflow: auto;
+  position: absolute;
+  left: 0px;
+  right: 5px;
+  z-index: 1000;
+
+  background-color: hsla(0,0%,0%,.1);
+  box-shadow: inset -1px 0 0 hsla(0,0%,0%,.25);
+}
+
+#sidebarSizer {
+  top: 37px;
+  bottom: 0;
+  overflow: hidden;
+  position: absolute;
+  left: 195px;
+  width: 1px;
+  z-index: 1001;
+  border: 2px outset;
+  border-left-width: 3px;
+  cursor: e-resize;
+}
+
+#viewerContainer {
+  overflow: auto;
+  box-shadow: inset 1px 0 0 hsla(0,0%,100%,.05);
+  padding-top: 30px;
+  position: absolute;
+  top: 37px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.toolbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 37px;
+  z-index: 9999;
+  cursor: default;
+}
+
+#toolbarContainer {
+  width: 100%;
+}
+
+#toolbarSidebar {
+  width: 200px;
+  height: 29px;
+  background-image: url(../../img/epub/texture.png),
+                    -webkit-linear-gradient(hsla(0,0%,30%,.99), hsla(0,0%,25%,.95));
+  background-image: url(../../img/epub/texture.png),
+                    -moz-linear-gradient(hsla(0,0%,30%,.99), hsla(0,0%,25%,.95));
+  background-image: url(../../img/epub/texture.png),
+                    -ms-linear-gradient(hsla(0,0%,30%,.99), hsla(0,0%,25%,.95));
+  background-image: url(../../img/epub/texture.png),
+                    -o-linear-gradient(hsla(0,0%,30%,.99), hsla(0,0%,25%,.95));
+  background-image: url(../../img/epub/texture.png),
+                    linear-gradient(hsla(0,0%,30%,.99), hsla(0,0%,25%,.95));
+  box-shadow: inset -2px 0 0 hsla(0,0%,100%,.08),
+              inset 0 1px 1px hsla(0,0%,0%,.15),
+              inset 0 -1px 0 hsla(0,0%,100%,.05),
+              0 1px 0 hsla(0,0%,0%,.15),
+              0 1px 1px hsla(0,0%,0%,.1);
+}
+
+#toolbarViewer {
+  position: relative;
+  height: 37px;
+  background-image: url(../../img/epub/texture.png),
+                    -webkit-linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
+  background-image: url(../../img/epub/texture.png),
+                    -moz-linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
+  background-image: url(../../img/epub/texture.png),
+                    -ms-linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
+  background-image: url(../../img/epub/texture.png),
+                    -o-linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
+  background-image: url(../../img/epub/texture.png),
+                    linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
+  border-left: 1px solid hsla(0,0%,0%,.5);
+  box-shadow: inset 1px 0 0 hsla(0,0%,100%,.08),
+              inset 0 1px 1px hsla(0,0%,0%,.15),
+              inset 0 -1px 0 hsla(0,0%,100%,.05),
+              0 1px 0 hsla(0,0%,0%,.15),
+              0 1px 1px hsla(0,0%,0%,.1);
+}
+html #toolbarViewerLeft {
+  margin-left: -1px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+html #toolbarViewerRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+}
+html #toolbarViewerLeft > *,
+html #toolbarViewerMiddle > *,
+html #toolbarViewerRight > * {
+  float: left;
+}
+
+html .splitToolbarButton {
+  margin: 6px 2px 4px 0;
+  display: inline-block;
+}
+html .splitToolbarButton > .toolbarButton {
+  border-radius: 0;
+  float: left;
+}
+
+.toolbarButton {
+  border: 0 none;
+  background-color: rgba(0, 0, 0, 0);
+  width: 37px;
+  height: 25px;
+}
+
+.toolbarButton > span {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.toolbarButton[disabled] {
+  opacity: .5;
+}
+
+.toolbarButton.group {
+  margin-right:0;
+}
+
+.splitToolbarButton.toggled .toolbarButton {
+	left: 200px;
+  margin: 0;
+}
+
+.splitToolbarButton:hover > .toolbarButton,
+.splitToolbarButton:focus > .toolbarButton,
+.splitToolbarButton.toggled > .toolbarButton,
+.toolbarButton.textButton {
+  background-color: hsla(0,0%,0%,.12);
+  background-image: -webkit-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -moz-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -ms-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -o-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-clip: padding-box;
+  border: 1px solid hsla(0,0%,0%,.35);
+  border-color: hsla(0,0%,0%,.32) hsla(0,0%,0%,.38) hsla(0,0%,0%,.42);
+  box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
+              0 0 1px hsla(0,0%,100%,.15) inset,
+              0 1px 0 hsla(0,0%,100%,.05);
+  -webkit-transition-property: background-color, border-color, box-shadow;
+  -webkit-transition-duration: 150ms;
+  -webkit-transition-timing-function: ease;
+  -moz-transition-property: background-color, border-color, box-shadow;
+  -moz-transition-duration: 150ms;
+  -moz-transition-timing-function: ease;
+  -ms-transition-property: background-color, border-color, box-shadow;
+  -ms-transition-duration: 150ms;
+  -ms-transition-timing-function: ease;
+  -o-transition-property: background-color, border-color, box-shadow;
+  -o-transition-duration: 150ms;
+  -o-transition-timing-function: ease;
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease;
+
+}
+.splitToolbarButton > .toolbarButton:hover,
+.splitToolbarButton > .toolbarButton:focus,
+.dropdownToolbarButton:hover,
+.toolbarButton.textButton:hover,
+.toolbarButton.textButton:focus {
+  background-color: hsla(0,0%,0%,.2);
+  box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
+              0 0 1px hsla(0,0%,100%,.15) inset,
+              0 0 1px hsla(0,0%,0%,.05);
+  z-index: 199;
+}
+html .splitToolbarButton > .toolbarButton:first-child {
+  position: relative;
+  margin: 0;
+  margin-right: -1px;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  border-right-color: transparent;
+}
+html .splitToolbarButton > .toolbarButton:last-child {
+  position: relative;
+  margin: 0;
+  margin-left: -1px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-left-color: transparent;
+}
+.splitToolbarButtonSeparator {
+  padding: 8px 0;
+  width: 1px;
+  background-color: hsla(0,0%,00%,.5);
+  z-index: 99;
+  box-shadow: 0 0 0 1px hsla(0,0%,100%,.08);
+  display: inline-block;
+  margin: 5px 0;
+}
+html .splitToolbarButtonSeparator {
+  float:left;
+}
+.splitToolbarButton:hover > .splitToolbarButtonSeparator,
+.splitToolbarButton.toggled > .splitToolbarButtonSeparator {
+  padding: 12px 0;
+  margin: 0;
+  box-shadow: 0 0 0 1px hsla(0,0%,100%,.03);
+  -webkit-transition-property: padding;
+  -webkit-transition-duration: 10ms;
+  -webkit-transition-timing-function: ease;
+  -moz-transition-property: padding;
+  -moz-transition-duration: 10ms;
+  -moz-transition-timing-function: ease;
+  -ms-transition-property: padding;
+  -ms-transition-duration: 10ms;
+  -ms-transition-timing-function: ease;
+  -o-transition-property: padding;
+  -o-transition-duration: 10ms;
+  -o-transition-timing-function: ease;
+  transition-property: padding;
+  transition-duration: 10ms;
+  transition-timing-function: ease;
+}
+
+.toolbarButton,
+.dropdownToolbarButton {
+  min-width: 16px;
+  padding: 2px 6px 0;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: hsl(0,0%,95%);
+  font-size: 12px;
+  line-height: 14px;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  /* Opera does not support user-select, use <... unselectable="on"> instead */
+  cursor: default;
+  -webkit-transition-property: background-color, border-color, box-shadow;
+  -webkit-transition-duration: 150ms;
+  -webkit-transition-timing-function: ease;
+  -moz-transition-property: background-color, border-color, box-shadow;
+  -moz-transition-duration: 150ms;
+  -moz-transition-timing-function: ease;
+  -ms-transition-property: background-color, border-color, box-shadow;
+  -ms-transition-duration: 150ms;
+  -ms-transition-timing-function: ease;
+  -o-transition-property: background-color, border-color, box-shadow;
+  -o-transition-duration: 150ms;
+  -o-transition-timing-function: ease;
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease;
+}
+
+html .toolbarButton,
+html .dropdownToolbarButton {
+  margin: 6px 2px 4px 0;
+}
+
+.toolbarButton:hover,
+.toolbarButton:focus,
+.dropdownToolbarButton {
+  background-color: hsla(0,0%,0%,.12);
+  background-image: -webkit-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -moz-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -ms-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -o-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-clip: padding-box;
+  border: 1px solid hsla(0,0%,0%,.35);
+  border-color: hsla(0,0%,0%,.32) hsla(0,0%,0%,.38) hsla(0,0%,0%,.42);
+  box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
+              0 0 1px hsla(0,0%,100%,.15) inset,
+              0 1px 0 hsla(0,0%,100%,.05);
+}
+
+.toolbarButton:hover:active,
+.dropdownToolbarButton:hover:active {
+  background-color: hsla(0,0%,0%,.2);
+  background-image: -webkit-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -moz-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -ms-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -o-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  border-color: hsla(0,0%,0%,.35) hsla(0,0%,0%,.4) hsla(0,0%,0%,.45);
+  box-shadow: 0 1px 1px hsla(0,0%,0%,.1) inset,
+              0 0 1px hsla(0,0%,0%,.2) inset,
+              0 1px 0 hsla(0,0%,100%,.05);
+  -webkit-transition-property: background-color, border-color, box-shadow;
+  -webkit-transition-duration: 10ms;
+  -webkit-transition-timing-function: linear;
+  -moz-transition-property: background-color, border-color, box-shadow;
+  -moz-transition-duration: 10ms;
+  -moz-transition-timing-function: linear;
+  -ms-transition-property: background-color, border-color, box-shadow;
+  -ms-transition-duration: 10ms;
+  -ms-transition-timing-function: linear;
+  -o-transition-property: background-color, border-color, box-shadow;
+  -o-transition-duration: 10ms;
+  -o-transition-timing-function: linear;
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: 10ms;
+  transition-timing-function: linear;
+}
+
+.toolbarButton.toggled,
+.splitToolbarButton.toggled > .toolbarButton.toggled {
+  background-color: hsla(0,0%,0%,.3);
+  background-image: -webkit-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -moz-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -ms-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -o-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  border-color: hsla(0,0%,0%,.4) hsla(0,0%,0%,.45) hsla(0,0%,0%,.5);
+  box-shadow: 0 1px 1px hsla(0,0%,0%,.1) inset,
+              0 0 1px hsla(0,0%,0%,.2) inset,
+              0 1px 0 hsla(0,0%,100%,.05);
+  -webkit-transition-property: background-color, border-color, box-shadow;
+  -webkit-transition-duration: 10ms;
+  -webkit-transition-timing-function: linear;
+  -moz-transition-property: background-color, border-color, box-shadow;
+  -moz-transition-duration: 10ms;
+  -moz-transition-timing-function: linear;
+  -ms-transition-property: background-color, border-color, box-shadow;
+  -ms-transition-duration: 10ms;
+  -ms-transition-timing-function: linear;
+  -o-transition-property: background-color, border-color, box-shadow;
+  -o-transition-duration: 10ms;
+  -o-transition-timing-function: linear;
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: 10ms;
+  transition-timing-function: linear;
+}
+
+.toolbarButton.toggled:hover:active,
+.splitToolbarButton.toggled > .toolbarButton.toggled:hover:active {
+  background-color: hsla(0,0%,0%,.4);
+  border-color: hsla(0,0%,0%,.4) hsla(0,0%,0%,.5) hsla(0,0%,0%,.55);
+  box-shadow: 0 1px 1px hsla(0,0%,0%,.2) inset,
+              0 0 1px hsla(0,0%,0%,.3) inset,
+              0 1px 0 hsla(0,0%,100%,.05);
+}
+
+html .splitToolbarButton:first-child,
+html .toolbarButton:first-child {
+  margin-left: 16px;
+}
+html .splitToolbarButton:last-child,
+html .toolbarButton:last-child {
+  margin-right: 4px;
+}
+
+.toolbarButtonSpacer {
+  width: 30px;
+  display: inline-block;
+  height: 1px;
+}
+
+.toolbarButtonFlexibleSpacer {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  min-width: 30px;
+}
+
+.toolbarButton#sidebarToggle::before {
+  display: inline-block;
+  content: url(../../img/epub/toolbarButton-sidebarToggle.png);
+}
+    
+.toolbarButton.previousTOC::before {
+  display: inline-block;
+  content: url(../../img/epub/toolbarButton-previous.png);
+}
+    
+.toolbarButton.nextTOC::before {
+  display: inline-block;
+  content: url(../../img/epub/toolbarButton-next.png);
+}
+    
+.toolbarButton.zoomOut::before {
+  display: inline-block;
+  content: url(../../img/epub/toolbarButton-zoomOut.png);
+}
+    
+.toolbarButton.zoomIn::before {
+  display: inline-block;
+  content: url(../../img/epub/toolbarButton-zoomIn.png);
+}
+
+.toolbarButton.fullscreen::before {
+  display: inline-block;
+  content: url(../../img/epub/toolbarButton-fullscreen.png);
+}
+
+.toolbarButton.download::before {
+    display: inline-block;
+    content: url(../../img/epub/toolbarButton-download.png);
+}
+
+.toolbarButton.close::before {
+    display: inline-block;
+    content: url(../../img/epub/toolbarButton-close.png);
+}
+
+.toolbarButton.bookmarkSave::before {
+    display: inline-block;
+    content: url(../../img/epub/bookmark_save.png);
+}
+
+.toolbarButton.bookmarkGo::before {
+    display: inline-block;
+    content: url(../../img/epub/bookmark_go.png);
+}
+
+
+.toolbarField {
+  padding: 3px 6px;
+  margin: 7px 0 4px 0;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: hsla(0,0%,100%,.09);
+  background-image: -moz-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-clip: padding-box;
+  border: 1px solid hsla(0,0%,0%,.35);
+  border-color: hsla(0,0%,0%,.32) hsla(0,0%,0%,.38) hsla(0,0%,0%,.42);
+  box-shadow: 0 1px 0 hsla(0,0%,0%,.05) inset,
+              0 1px 0 hsla(0,0%,100%,.05);
+  color: hsl(0,0%,95%);
+  font-size: 12px;
+  line-height: 14px;
+  outline-style: none;
+  -moz-transition-property: background-color, border-color, box-shadow;
+  -moz-transition-duration: 150ms;
+  -moz-transition-timing-function: ease;
+}
+
+.toolbarLabel {
+  min-width: 16px;
+  padding: 3px 6px 3px 2px;
+  margin: 7px 2px 4px 0;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: hsl(0,0%,85%);
+  font-size: 12px;
+  line-height: 14px;
+  text-align: left;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  cursor: default;
+}
+
+#thumbnailView {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  text-align: center;
+  padding-top: 5px;
+  overflow: hidden;
+}
+
+.thumbnail {
+  width: 160px;
+  max-height: 240px;
+}
+
+.thumbnail:not([data-loaded]) {
+  border: 1px dashed rgba(255, 255, 255, 0.5);
+}
+
+.thumbnailImage {
+  -moz-transition-duration: 150ms;
+  border: 1px solid transparent;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+  opacity: 0.8;
+  z-index: 99;
+}
+
+.thumbnailSelectionRing {
+  border-radius: 2px;
+  padding: 7px;
+  -moz-transition-duration: 150ms;
+}
+    
+a:focus > .thumbnail > .thumbnailSelectionRing > .thumbnailImage,
+.thumbnail:hover > .thumbnailSelectionRing > .thumbnailImage {
+  opacity: .9;
+}
+
+a:focus > .thumbnail > .thumbnailSelectionRing,
+.thumbnail:hover > .thumbnailSelectionRing {
+  background-color: hsla(0,0%,100%,.15);
+  background-image: -moz-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-clip: padding-box;
+  box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
+              0 0 1px hsla(0,0%,100%,.2) inset,
+              0 0 1px hsla(0,0%,0%,.2);
+  color: hsla(0,0%,100%,.9);
+}
+
+.thumbnail.selected > .thumbnailSelectionRing > .thumbnailImage {
+  box-shadow: 0 0 0 1px hsla(0,0%,0%,.5);
+  opacity: 1;
+}
+
+.thumbnail.selected > .thumbnailSelectionRing {
+  background-color: hsla(0,0%,100%,.3);
+  background-image: -moz-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-clip: padding-box;
+  box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
+              0 0 1px hsla(0,0%,100%,.1) inset,
+              0 0 1px hsla(0,0%,0%,.2);
+  color: hsla(0,0%,100%,1);
+}
+
+#outlineView {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 250px;
+  bottom: 1px;
+  padding: 4px 4px 0;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+}
+
+.outlineItem > .outlineItems {
+  margin-left: 20px;
+}
+
+.outlineItem {
+	display: block;
+}
+
+.outlineItem > a {
+	top: 0;
+  text-decoration: none;
+  display: inline-block;
+  min-width: 95%;
+  height: 20px;
+  padding: 2px 0 0 10px;
+  margin-bottom: 1px;
+  border-radius: 2px;
+  color: hsla(0,0%,100%,.8);
+  font-size: 13px;
+  line-height: 15px;
+  -moz-user-select:none;
+  cursor: default;
+  white-space: nowrap;
+}
+
+.outlineItem > a:hover {
+  background-color: hsla(0,0%,100%,.02);
+  background-image: -moz-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-clip: padding-box;
+  box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
+              0 0 1px hsla(0,0%,100%,.2) inset,
+              0 0 1px hsla(0,0%,0%,.2);
+  color: hsla(0,0%,100%,.9);
+}
+
+.outlineItem.selected {
+  background-color: hsla(0,0%,100%,.08);
+  background-image: -moz-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-clip: padding-box;
+  box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
+              0 0 1px hsla(0,0%,100%,.1) inset,
+              0 0 1px hsla(0,0%,0%,.2);
+  color: hsla(0,0%,100%,1);
+}
+
+.noOutline,
+.noResults {
+  font-size: 12px;
+  color: hsla(0,0%,100%,.8);
+  font-style: italic;
+}
+
+#sidebarControls {
+  position:absolute;
+  width: 180px;
+  height: 37px;
+  left: 15px;
+  bottom: 35px;
+}
+
+canvas {
+  margin: auto;
+  display: block;
+}
+
+.page {
+  direction: ltr;
+  width: 816px;
+  height: 1056px;
+  margin: 10px auto;
+  position: relative;
+  overflow: hidden;
+  -webkit-box-shadow: 0px 4px 10px #000;
+  -moz-box-shadow: 0px 4px 10px #000;
+  box-shadow: 0px 4px 10px #000;
+  background-color: white;
+}
+
+.page > a {
+  display: block;
+  position: absolute;
+}
+
+.page > a:hover {
+  opacity: 0.2;
+  background: #ff0;
+  -webkit-box-shadow: 0px 2px 10px #ff0;
+  -moz-box-shadow: 0px 2px 10px #ff0;
+  box-shadow: 0px 2px 10px #ff0;
+}
+
+.loadingIcon {
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: url('../../img/epub/loading-icon.gif') center no-repeat;
+}
+
+#loadingBox {
+  position: absolute;
+  top: 50%;
+  margin-top: -25px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #ddd;
+  font-size: 14px;
+}
+
+#loadingBar {
+  display: inline-block;
+  clear: both;
+  margin: 0px;
+  margin-top: 5px;
+  line-height: 0;
+  border-radius: 2px;
+  width: 200px;
+  height: 25px;
+
+  background-color: hsla(0,0%,0%,.3);
+  background-image: -moz-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  background-image: -webkit-linear-gradient(hsla(0,0%,100%,.05), hsla(0,0%,100%,0));
+  border: 1px solid #000;
+  box-shadow: 0 1px 1px hsla(0,0%,0%,.1) inset,
+              0 0 1px hsla(0,0%,0%,.2) inset,
+              0 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+#loadingBar .progress {
+  display: inline-block;
+  float: left;
+
+  background: #666;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b2b2b2), color-stop(100%,#898989));
+  background: -webkit-linear-gradient(top, #b2b2b2 0%,#898989 100%);
+  background: -moz-linear-gradient(top, #b2b2b2 0%,#898989 100%);
+  background: -ms-linear-gradient(top, #b2b2b2 0%,#898989 100%);
+  background: -o-linear-gradient(top, #b2b2b2 0%,#898989 100%);
+  background: linear-gradient(top, #b2b2b2 0%,#898989 100%);    
+
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+
+  width: 0%;
+  height: 100%;
+}
+
+#loadingBar .progress.full {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+#loadingBar .progress.indeterminate {
+  width: 100%;
+  height: 25px;
+  background-image: -moz-linear-gradient( 30deg, #404040, #404040 15%, #898989, #404040 85%, #404040);
+  background-image: -webkit-linear-gradient( 30deg, #404040, #404040 15%, #898989, #404040 85%, #404040);
+  background-image: -ms-linear-gradient( 30deg, #404040, #404040 15%, #898989, #404040 85%, #404040);
+  background-image: -o-linear-gradient( 30deg, #404040, #404040 15%, #898989, #404040 85%, #404040);
+  background-size: 75px 25px;
+  -moz-animation: progressIndeterminate 1s linear infinite;
+  -webkit-animation: progressIndeterminate 1s linear infinite;
+}
+
+@-moz-keyframes progressIndeterminate {
+  from { background-position: 0px 0px; }
+  to { background-position: 75px 0px; }
+}
+
+@-webkit-keyframes progressIndeterminate {
+  from { background-position: 0px 0px; }
+  to { background-position: 75px 0px; }
+}
+
+.textLayer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  color: #000;
+  font-family: sans-serif;
+}
+
+.textLayer > div {
+  color: transparent;
+  position: absolute;
+  line-height:1.3;
+}
+
+#errorWrapper {
+  background: none repeat scroll 0 0 #FF5555;
+  color: white;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 37px;
+  z-index: 1000;
+  padding: 3px;
+  font-size: 0.8em;
+}
+
+#errorMessageLeft {
+  float: left;
+}
+
+#errorMessageRight {
+  float: right;
+}
+
+#errorMoreInfo {
+  background-color: #FFFFFF;
+  color: black;
+  padding: 3px;
+  margin: 6px;
+  width: 98%;
+}
+
+.clearBoth {
+  clear: both;
+}
+
+.fileInput {
+  background: white;
+  color: black;
+  margin-top: 5px;
+}
+
+#viewer {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left : 10px;
+  right : 10px;
+  max-width: 20cm;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: Cornsilk;
+  border : 2px solid black;
+  color: black;
+}
+
+#viewerFrame {
+	position: absolute;
+	top: 1cm;
+	bottom: 1cm;
+	left: 0.5cm;
+	right: 0.5cm;
+}
+#progression {
+	background-color: DarkGray;
+	height: 0.2em;
+	width: 0;
+	position: absolute;
+	top: 3px;
+	left: 0;
+}
+
+#viewerFrame > iframe {
+	border: none;
+	width: 100%;
+	height: 100%;
+}
+
+#viewerTop {
+	position: absolute;
+	top: 2px;
+	left: 0.5cm;
+	right: 0.5cm;
+	height: 1cm;
+}
+
+#viewerTop #previous {
+	position: absolute;
+	left: 0;
+}
+
+#viewerTop #pageNumber {
+	position: absolute;
+	right: 0;
+	margin-top: 0.25cm;
+}
+
+#viewerBottom {
+	position: absolute;
+	bottom: 2px;
+	right: 0.5cm;
+	left: 0.5cm;
+	height: 1cm;
+}
+
+#viewerBottom #next {
+	position: absolute;
+	right: 0;
+}
+

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info>
+    <id>files_epubviewer</id>
+    <name>EPub and Comics online reader (oc7+)</name>
+    <description>Online EPub, and Comics (cbr/cbz) files reader for owncloud 7</description>
+    <licence>LGPL</licence>
+    <author>Thierry CHARLES, based on files_pdfviewer (Thomas Müller) ; readepub (Tristan Siebers) </author>
+    <require>7.0</require>
+    <shipped>false</shipped>
+    <default_enable/>
+</info>
